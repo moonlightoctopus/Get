@@ -1,14 +1,60 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f0f0f0;
+    margin:0;
+    padding:40px;
+}
+
+#posts{
+    max-width:900px;
+    margin:auto;
+}
+
+.post{
+    background:white;
+    border-radius:16px;
+    padding:35px;
+    margin-bottom:35px;
+    text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,.15);
+}
+
+.title{
+    font-size:42px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.body{
+    font-size:24px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.tags{
+    font-size:18px;
+    color:#666;
+    font-style:italic;
+}
+
+</style>
+
+</head>
+
 <body>
 
 <div id="posts"></div>
 
 <script>
 
-const url =
-"https://script.google.com/macros/s/AKfycbyLKqDq04V4Ytov5jEQvzwXHq5I5qXCZryjFbn4htopjRueXIZandfcc_y3jWYJ-7f4/exec";
+const url = "YOUR_SCRIPT_URL_HERE";
 
 fetch(url)
 .then(r => r.json())
@@ -22,9 +68,9 @@ fetch(url)
 
         container.innerHTML += `
             <div class="post">
-                <h2>${post.title}</h2>
-                <h4>${post.body}</h4>
-                <p>${post.tags}</p>
+                <div class="title">${post.title}</div>
+                <div class="body">${post.body}</div>
+                <div class="tags">${post.tags}</div>
             </div>
         `;
 
