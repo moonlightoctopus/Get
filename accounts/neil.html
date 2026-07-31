@@ -115,10 +115,10 @@ body {
 
 .dm {
     background: #fff;
-    border: 2px inset #808080;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 13px;
+    border: 1px inset #808080;
+    padding: 5px 7px;
+    margin-bottom: 5px;
+    font-size: 11px;
     white-space: pre-wrap;
 }
 
@@ -138,6 +138,45 @@ body {
     font-size: 12px;
     color: #444;
     margin-top: 10px;
+}
+
+.newest {
+    text-align: left;
+    margin-top: 16px;
+}
+
+.newest-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.newest-item {
+    background: #fff;
+    border: 1px inset #808080;
+    padding: 3px 5px;
+    margin-bottom: 3px;
+    font-size: 9px;
+    white-space: pre-wrap;
+}
+
+.newest-meta {
+    font-weight: bold;
+    margin-bottom: 1px;
+    color: #000;
+    font-size: 10px;
+}
+
+.newest-target {
+    font-weight: normal;
+    color: #444;
+    font-size: 9px;
+    margin-bottom: 2px;
+}
+
+.newest-time {
+    font-weight: normal;
+    color: #444;
+    font-size: 9px;
 }
 
 .statusbar {
@@ -175,7 +214,7 @@ body {
         </a>
 
         <div class="signin-area">
-            <label class="password-label" for="dm-password">View your DMs (password required):</label>
+            <label class="password-label" for="dm-password">View your DMs and newest replies (password required):</label>
             <div class="password-row">
                 <input class="win95-input" type="password" id="dm-password" placeholder="Password">
                 <button class="win95-btn" id="dm-unlock" style="margin-top:0;">Unlock</button>
@@ -184,6 +223,12 @@ body {
                 <div class="inbox-label">Your DMs:</div>
                 <div id="dm-list"></div>
             </div>
+
+            <div class="newest" id="newest" style="display:none;">
+                <div class="newest-label">Newest Replies:</div>
+                <div id="newest-list"></div>
+            </div>
+
             <div class="inbox-status" id="inbox-status"></div>
         </div>
 
@@ -198,7 +243,7 @@ body {
 
 
 const API =
-"https://script.google.com/macros/s/AKfycbzUdHtOTiTLZZrCj5ja3NcqAecDbMq5cnHXaKXCP-nQG5pneT2_6diIDleZvMppKVcReQ/exec";
+"https://script.google.com/macros/s/AKfycbwVuMo1rn69RfXOzZ6xUvhDqQzy3RNLoyPq-3yrPfx4oANAOF2Ntkb0cmn7YHoiES8fEg/exec";
 
 const accountName = "Neil";
 
@@ -309,6 +354,27 @@ function unlockDms() {
         }
 
         inboxEl.style.display = "block";
+
+        const newestEl = document.getElementById("newest");
+        const newestListEl = document.getElementById("newest-list");
+        const newest = data.newest || [];
+
+        if (newest.length === 0) {
+            newestListEl.innerHTML = "<div class='newest-item'>No replies yet.</div>";
+        } else {
+
+            newestListEl.innerHTML = newest.map(item => `
+                <div class="newest-item">
+                    <div class="newest-meta">${item.name} <span style="font-weight:normal;">#${item.id}</span></div>
+                    <div class="newest-target">Replying to: ${item.targetLabel}</div>
+                    <div class="newest-time">${new Date(item.timestamp).toLocaleString()}</div>
+                    ${item.body}
+                </div>
+            `).join("");
+
+        }
+
+        newestEl.style.display = "block";
 
     })
 
