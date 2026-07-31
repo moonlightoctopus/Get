@@ -128,6 +128,16 @@ body {
     color: #000;
 }
 
+.account-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.account-link:hover {
+    text-decoration: underline;
+}
+
 .dm-time {
     font-weight: normal;
     color: #444;
@@ -247,6 +257,17 @@ const API =
 
 const accountName = "Neil";
 
+function accountUrl(name) {
+    return name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+}
+
+function accountLink(name) {
+    return `<a class="account-link" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html">${name}</a>`;
+}
+
 
 document.getElementById("username").textContent = accountName;
 
@@ -344,7 +365,7 @@ function unlockDms() {
             listEl.innerHTML = data.dms.map(dm => `
                 <div class="dm">
                     <div class="dm-meta">
-                        ${dm.from}
+                        ${accountLink(dm.from)}
                         <span class="dm-time">${new Date(dm.timestamp).toLocaleString()}</span>
                     </div>
                     ${dm.message}
@@ -365,7 +386,7 @@ function unlockDms() {
 
             newestListEl.innerHTML = newest.map(item => `
                 <div class="newest-item">
-                    <div class="newest-meta">${item.name} <span style="font-weight:normal;">#${item.id}</span></div>
+                    <div class="newest-meta">${accountLink(item.name)} <span style="font-weight:normal;">#${item.id}</span></div>
                     <div class="newest-target">Replying to: ${item.targetLabel}</div>
                     <div class="newest-time">${new Date(item.timestamp).toLocaleString()}</div>
                     ${item.body}
