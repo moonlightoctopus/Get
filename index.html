@@ -150,28 +150,31 @@ fetch(url)
 
 
         <div class="post">
-
-
-            <div class="account">
-                ${post.name}
+        
+            <div class="header">
+        
+                <div class="account">
+                    ${post.name}
+                </div>
+        
+                <div class="time">
+                    ${new Date(post.timestamp).toLocaleString()}
+                </div>
+        
             </div>
-
-
+        
             <div class="title">
                 ${post.title}
             </div>
-
-
+        
             <div class="body">
                 ${post.body}
             </div>
-
-
+        
             <div class="tags">
                 ${tags}
             </div>
-
-
+        
         </div>
 
 
