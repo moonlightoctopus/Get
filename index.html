@@ -34,20 +34,21 @@ body {
 
 
 .account {
+    display: inline;
+    background: none;
+    color: #1a73e8;
 
-    display: inline-block;
+    padding: 0;
+    border-radius: 0;
 
-    background: #333;
-    color: white;
-
-    padding: 12px 30px;
-
-    border-radius: 999px;
-
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
 
-    margin-bottom: 25px;
+    text-decoration: none;
+}
+
+.account:hover {
+    text-decoration: underline;
 }
 
 .title {
@@ -153,9 +154,12 @@ fetch(url)
         
             <div class="header">
         
-                <div class="account">
+                <a
+                    class="account"
+                    href="https://sites.google.com/view/sites-is-amazing/home/${encodeURIComponent(post.name)}"
+                >
                     ${post.name}
-                </div>
+                </a>
         
                 <div class="time">
                     ${new Date(post.timestamp).toLocaleString()}
