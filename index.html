@@ -167,9 +167,9 @@ fetch(url)
                 ${post.title}
             </div>
         
-            <div class="body">
-                ${post.body}
-            </div>
+            <div class="body">${
+                post.body.trim()
+            }</div>
         
             <div class="tags">
                 ${tags}
