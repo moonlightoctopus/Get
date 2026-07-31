@@ -107,6 +107,12 @@ body {
     color: #000;
 }
 
+.post-number {
+    font-size: 10px;
+    font-weight: normal;
+    color: #999;
+}
+
 .title {
     font-size: 18px;
     font-weight: bold;
@@ -138,6 +144,152 @@ body {
     font-size: 12px;
 }
 
+.post-actions {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reply-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+}
+
+.replies-dropdown {
+    margin-top: 10px;
+}
+
+.replies-summary {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 5px 10px;
+    display: inline-block;
+    list-style: none;
+}
+
+.replies-summary::-webkit-details-marker {
+    display: none;
+}
+
+.replies-list {
+    margin-top: 8px;
+    padding-left: 4px;
+}
+
+.reply {
+    background: #c0c0c0;
+    border: 1px outset #fff;
+    margin-bottom: 5px;
+}
+
+.reply-body-wrap {
+    padding: 5px;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px inset #808080;
+    padding: 2px 5px;
+    margin-bottom: 4px;
+    font-size: 10px;
+}
+
+.reply-account {
+    font-weight: bold;
+    color: #000;
+}
+
+.reply-time {
+    color: #666;
+}
+
+.reply-number {
+    font-size: 9px;
+    color: #aaa;
+}
+
+.reply-body {
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.nested-actions {
+    margin-top: 6px;
+}
+
+.tiny-btn {
+    padding: 3px 8px;
+    font-size: 10px;
+}
+
+.nested-dropdown {
+    margin-top: 6px;
+}
+
+.nested-summary {
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 3px 8px;
+    display: inline-block;
+    list-style: none;
+}
+
+.nested-summary::-webkit-details-marker {
+    display: none;
+}
+
+.nested-list {
+    margin-top: 6px;
+    padding-left: 6px;
+}
+
+.nested-reply {
+    background: #e8e8e8;
+    border: 1px solid #999;
+    margin-bottom: 6px;
+    padding: 6px;
+}
+
+.nested-reply-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    margin-bottom: 3px;
+    color: #333;
+}
+
+.nested-reply-account {
+    font-weight: bold;
+}
+
+.nested-reply-body {
+    font-size: 10px;
+    line-height: 1.3;
+    white-space: pre-wrap;
+}
+
+.no-replies-tiny {
+    font-size: 10px;
+    color: #888;
+}
+
+.no-replies {
+    font-size: 11px;
+    color: #666;
+    padding: 4px;
+}
+
 </style>
 
 </head>
@@ -166,7 +318,47 @@ function accountUrl(name) {
         .toLowerCase()
         .replace(/\s+/g, "-");
 }
-const url = "https://script.google.com/macros/s/AKfycbzUdHtOTiTLZZrCj5ja3NcqAecDbMq5cnHXaKXCP-nQG5pneT2_6diIDleZvMppKVcReQ/exec";
+
+// Renders a reply and all of its own replies, recursively — works at any
+// nesting depth, since the same "Reply" form and dropdown pattern applies
+// whether you're replying to a post's reply or to another reply.
+function renderReply(reply) {
+
+    const children = reply.replies || [];
+
+    return `
+        <div class="reply">
+            <div class="reply-body-wrap">
+                <div class="reply-header">
+                    <span class="reply-account">${reply.name}</span>
+                    <span style="display:flex; align-items:center; gap:6px;">
+                        <span class="reply-time">${new Date(reply.timestamp).toLocaleString()}</span>
+                        <span class="reply-number">#${reply.id}</span>
+                    </span>
+                </div>
+                <div class="reply-body">${reply.body}</div>
+
+                <div class="nested-actions">
+                    <a class="win95-btn tiny-btn" href="https://forms.gle/unba1gXEDGBEx6YA8" target="_blank" rel="noopener">
+                        Reply
+                    </a>
+                </div>
+
+                <details class="nested-dropdown">
+                    <summary class="nested-summary">Replies (${children.length})</summary>
+                    <div class="nested-list">
+                        ${
+                            children.length === 0
+                                ? `<div class="no-replies-tiny">No replies yet.</div>`
+                                : children.map(renderReply).join("")
+                        }
+                    </div>
+                </details>
+            </div>
+        </div>
+    `;
+}
+const url = "https://script.google.com/macros/s/AKfycbwVuMo1rn69RfXOzZ6xUvhDqQzy3RNLoyPq-3yrPfx4oANAOF2Ntkb0cmn7YHoiES8fEg/exec";
 
 
 fetch(url)
@@ -175,10 +367,14 @@ fetch(url)
 
 .then(posts => {
 
-
     const container =
         document.getElementById("posts");
 
+    if (!Array.isArray(posts)) {
+        container.innerHTML =
+            `<div class="post"><div class="post-body-wrap">Failed to load posts: ${posts.error || "unknown error"}</div></div>`;
+        return;
+    }
 
     posts.reverse();
 
@@ -216,8 +412,12 @@ fetch(url)
                         ${post.name}
                     </a>
 
-                    <div class="time">
-                        ${new Date(post.timestamp).toLocaleString()}
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="time">
+                            ${new Date(post.timestamp).toLocaleString()}
+                        </div>
+
+                        <div class="post-number">#${post.number}</div>
                     </div>
 
                 </div>
@@ -231,6 +431,23 @@ fetch(url)
                 <div class="tags">
                     ${tags}
                 </div>
+
+                <div class="post-actions">
+                    <a class="win95-btn reply-btn" href="https://forms.gle/NsCWdpkaFn56UM7K6" target="_blank" rel="noopener">
+                        Reply
+                    </a>
+                </div>
+
+                <details class="replies-dropdown">
+                    <summary class="replies-summary">Replies (${(post.replies || []).length})</summary>
+                    <div class="replies-list">
+                        ${
+                            !post.replies || post.replies.length === 0
+                                ? `<div class="no-replies">No replies yet.</div>`
+                                : post.replies.map(renderReply).join("")
+                        }
+                    </div>
+                </details>
 
             </div>
 
