@@ -2,53 +2,150 @@
 <html>
 
 <head>
+<meta charset="UTF-8">
+<title>Neil - Profile</title>
 
 <style>
 
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    font-family: 'MS Sans Serif', 'Tahoma', Geneva, sans-serif;
+    font-size: 13px;
+    background: #c0c0c0;
     margin: 0;
     padding: 40px;
+    color: #000;
+}
+
+.window {
+    max-width: 500px;
+    margin: auto;
+    background: #c0c0c0;
+    border: 2px outset #fff;
 }
 
 .profile {
-
-    max-width: 700px;
-    margin: auto;
-
-    background: white;
-
-    padding: 40px;
-
-    border-radius: 20px;
-
+    padding: 20px;
     text-align: center;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,0.15);
-
 }
-
 
 .username {
-
-    font-size: 42px;
+    font-size: 26px;
     font-weight: bold;
-
-    margin-bottom: 25px;
-
+    margin-bottom: 16px;
+    color: #000;
 }
 
+.bio-label {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
 
 .bio {
-
-    font-size: 24px;
-
-    line-height: 1.6;
-
+    background: #fff;
+    border: 2px inset #808080;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.5;
     white-space: pre-wrap;
+    text-align: left;
+    min-height: 80px;
+}
 
+.win95-btn {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.win95-btn:active {
+    border-style: inset;
+    padding: 9px 15px 7px 17px;
+}
+
+.signin-area {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px solid #808080;
+    box-shadow: inset 0 1px 0 #fff;
+    text-align: left;
+}
+
+.password-label {
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.password-row {
+    display: flex;
+    gap: 6px;
+}
+
+.win95-input {
+    flex: 1;
+    background: #fff;
+    border: 2px inset #808080;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.inbox {
+    text-align: left;
+    margin-top: 16px;
+}
+
+.inbox-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.dm {
+    background: #fff;
+    border: 2px inset #808080;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    white-space: pre-wrap;
+}
+
+.dm-meta {
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #000;
+}
+
+.dm-time {
+    font-weight: normal;
+    color: #444;
+    font-size: 11px;
+}
+
+.inbox-status {
+    font-size: 12px;
+    color: #444;
+    margin-top: 10px;
+}
+
+.statusbar {
+    border-top: 2px solid #808080;
+    box-shadow: inset 0 1px 0 #fff;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: #000;
 }
 
 </style>
@@ -59,15 +156,40 @@ body {
 <body>
 
 
-<div class="profile">
+<div class="window">
 
-    <div class="username" id="username">
-        Loading...
+    <div class="profile">
+
+        <div class="username" id="username">
+            Loading...
+        </div>
+
+        <div class="bio-label">Bio:</div>
+
+        <div class="bio" id="bio">
+            Loading...
+        </div>
+
+        <a class="win95-btn" href="https://forms.gle/e7aigQvr7rMyM5CG7" target="_blank" rel="noopener">
+            Send DM
+        </a>
+
+        <div class="signin-area">
+            <label class="password-label" for="dm-password">View your DMs (password required):</label>
+            <div class="password-row">
+                <input class="win95-input" type="password" id="dm-password" placeholder="Password">
+                <button class="win95-btn" id="dm-unlock" style="margin-top:0;">Unlock</button>
+            </div>
+            <div class="inbox" id="inbox" style="display:none;">
+                <div class="inbox-label">Your DMs:</div>
+                <div id="dm-list"></div>
+            </div>
+            <div class="inbox-status" id="inbox-status"></div>
+        </div>
+
     </div>
 
-    <div class="bio" id="bio">
-        Loading...
-    </div>
+    <div class="statusbar">Ready</div>
 
 </div>
 
@@ -76,7 +198,7 @@ body {
 
 
 const API =
-"https://script.google.com/macros/s/AKfycbxaRBJK1cgR1FvjouAZKP1UK60Nyc3fb974XFJkw2yL3jGPxbBm_vy3Wg9aClRrQMiw6w/exec";
+"https://script.google.com/macros/s/AKfycbzUdHtOTiTLZZrCj5ja3NcqAecDbMq5cnHXaKXCP-nQG5pneT2_6diIDleZvMppKVcReQ/exec";
 
 const accountName = "Neil";
 
@@ -122,6 +244,80 @@ fetch(API)
     console.error(error);
 
 });
+
+
+// ---------- password-gated DM inbox ----------
+
+document.getElementById("dm-unlock").addEventListener("click", unlockDms);
+
+document.getElementById("dm-password").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") unlockDms();
+});
+
+function unlockDms() {
+
+    const statusEl = document.getElementById("inbox-status");
+    const passwordEl = document.getElementById("dm-password");
+    const password = passwordEl.value;
+
+    if (!password) {
+        statusEl.textContent = "Enter your password first.";
+        return;
+    }
+
+    statusEl.textContent = "Checking...";
+
+    fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids a CORS preflight against Apps Script
+        body: JSON.stringify({
+            type: "dms",
+            username: accountName,
+            password: password
+        })
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if (data.error) {
+            statusEl.textContent = data.error;
+            return;
+        }
+
+        statusEl.textContent = "";
+        passwordEl.value = "";
+
+        const inboxEl = document.getElementById("inbox");
+        const listEl = document.getElementById("dm-list");
+
+        if (data.dms.length === 0) {
+            listEl.innerHTML = "<div class='dm'>No messages yet.</div>";
+        } else {
+
+            listEl.innerHTML = data.dms.map(dm => `
+                <div class="dm">
+                    <div class="dm-meta">
+                        ${dm.from}
+                        <span class="dm-time">${new Date(dm.timestamp).toLocaleString()}</span>
+                    </div>
+                    ${dm.message}
+                </div>
+            `).join("");
+
+        }
+
+        inboxEl.style.display = "block";
+
+    })
+
+    .catch(error => {
+        statusEl.textContent = "Failed to load your DMs.";
+        console.error(error);
+    });
+
+}
 
 
 </script>
