@@ -112,7 +112,12 @@ body {
 
 <script>
 
-
+function accountUrl(name) {
+    return name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+}
 const url = "https://script.google.com/macros/s/AKfycbzdNDU1RbG2WpfqK2wCEPSv6x-JeLEP4JKDt2Im-Lu_wJQbXDRWfC71O1PIXSqNF-21SA/exec";
 
 
@@ -156,11 +161,11 @@ fetch(url)
         
                 <a
                     class="account"
-                    href="https://sites.google.com/view/sites-is-amazing/home/${encodeURIComponent(post.name)}"
+                    href="https://sites.google.com/view/sites-is-amazing/${accountUrl(post.name)}"
                 >
                     ${post.name}
                 </a>
-        
+                        
                 <div class="time">
                     ${new Date(post.timestamp).toLocaleString()}
                 </div>
