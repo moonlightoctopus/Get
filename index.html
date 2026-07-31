@@ -182,12 +182,12 @@ body {
 
 .reply {
     background: #c0c0c0;
-    border: 1px outset #fff;
-    margin-bottom: 5px;
+    border: 2px outset #fff;
+    margin-bottom: 8px;
 }
 
 .reply-body-wrap {
-    padding: 5px;
+    padding: 8px;
 }
 
 .reply-header {
@@ -195,15 +195,24 @@ body {
     justify-content: space-between;
     align-items: center;
     background: #fff;
-    border: 1px inset #808080;
-    padding: 2px 5px;
-    margin-bottom: 4px;
+    border: 2px inset #808080;
+    padding: 4px 8px;
+    margin-bottom: 6px;
     font-size: 10px;
 }
 
 .reply-account {
     font-weight: bold;
     color: #000;
+}
+
+.reply-account-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.reply-account-link:hover {
+    text-decoration: underline;
 }
 
 .reply-time {
@@ -319,6 +328,10 @@ function accountUrl(name) {
         .replace(/\s+/g, "-");
 }
 
+function accountLink(name, className) {
+    return `<a class="${className}" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html">${name}</a>`;
+}
+
 // Renders a reply and all of its own replies, recursively — works at any
 // nesting depth, since the same "Reply" form and dropdown pattern applies
 // whether you're replying to a post's reply or to another reply.
@@ -330,7 +343,7 @@ function renderReply(reply) {
         <div class="reply">
             <div class="reply-body-wrap">
                 <div class="reply-header">
-                    <span class="reply-account">${reply.name}</span>
+                    <span class="reply-account">${accountLink(reply.name, "reply-account-link")}</span>
                     <span style="display:flex; align-items:center; gap:6px;">
                         <span class="reply-time">${new Date(reply.timestamp).toLocaleString()}</span>
                         <span class="reply-number">#${reply.id}</span>
