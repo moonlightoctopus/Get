@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 40px;
+}
+
+.profile {
+
+    max-width: 700px;
+    margin: auto;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.15);
+
+}
+
+
+.username {
+
+    font-size: 42px;
+    font-weight: bold;
+
+    margin-bottom: 25px;
+
+}
+
+
+.bio {
+
+    font-size: 24px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="profile">
+
+    <div class="username" id="username">
+        Loading...
+    </div>
+
+    <div class="bio" id="bio">
+        Loading...
+    </div>
+
+</div>
+
+
+<script>
+
+
+const API =
+"https://script.google.com/macros/s/AKfycbxaRBJK1cgR1FvjouAZKP1UK60Nyc3fb974XFJkw2yL3jGPxbBm_vy3Wg9aClRrQMiw6w/exec";
+
+const accountName = "Neil";
+
+
+document.getElementById("username").textContent = accountName;
+
+
+fetch(API)
+
+.then(response => response.json())
+
+.then(posts => {
+
+
+    const account = posts.find(
+        post =>
+        post.name.toLowerCase() === accountName.toLowerCase()
+    );
+
+
+    if (account) {
+
+        document.getElementById("bio").textContent =
+            account.bio || "No bio set.";
+
+    }
+
+    else {
+
+        document.getElementById("bio").textContent =
+            "Bio not found.";
+
+    }
+
+
+})
+
+.catch(error => {
+
+    document.getElementById("bio").textContent =
+        "Failed to load bio.";
+
+    console.error(error);
+
+});
+
+
+</script>
+
+
+</body>
+
+</html>
