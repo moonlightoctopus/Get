@@ -314,9 +314,13 @@ body {
     <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
         Make an account
     </a>
+
+    <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
+        Rules
+    </a>
 </div>
 
-<div id="posts"></div>
+<div id="posts">Loading posts...</div>
 
 
 <script>
@@ -371,7 +375,7 @@ function renderReply(reply) {
         </div>
     `;
 }
-const url = "https://script.google.com/macros/s/AKfycbwVuMo1rn69RfXOzZ6xUvhDqQzy3RNLoyPq-3yrPfx4oANAOF2Ntkb0cmn7YHoiES8fEg/exec";
+const url = "https://script.google.com/macros/s/AKfycbwT3U2A_sY71UgvbgJsP3bwMkSxe65sXIkjB5mspxaxDlWlmLKbVtfrJVJ5Q5a50PyxjQ/exec";
 
 
 fetch(url)
@@ -391,9 +395,7 @@ fetch(url)
 
     posts.reverse();
 
-
-    posts.forEach(post => {
-
+    const postsHtml = posts.map(post => {
 
         const tags = post.tags
 
@@ -409,7 +411,7 @@ fetch(url)
 
 
 
-        container.innerHTML += `
+        return `
 
 
         <div class="post">
@@ -469,9 +471,9 @@ fetch(url)
 
         `;
 
-
     });
 
+    container.innerHTML = postsHtml.join("");
 
 });
 
