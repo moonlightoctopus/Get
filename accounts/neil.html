@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Neil - Profile</title>
+<title> Neil - Profile</title>
 
 <style>
 
@@ -227,8 +227,12 @@ body {
             Send DM
         </a>
 
+        <a class="win95-btn" href="https://forms.gle/DKuaqD97SvTR264u6" target="_blank" rel="noopener">
+            Follow
+        </a>
+
         <div class="signin-area">
-            <label class="password-label" for="dm-password">View your DMs and newest replies (password required):</label>
+            <label class="password-label" for="dm-password">View your DMs and notifications (password required):</label>
             <div class="password-row">
                 <input class="win95-input" type="password" id="dm-password" placeholder="Password">
                 <button class="win95-btn" id="dm-unlock" style="margin-top:0;">Unlock</button>
@@ -239,7 +243,7 @@ body {
             </div>
 
             <div class="newest" id="newest" style="display:none;">
-                <div class="newest-label">Newest Replies to You:</div>
+                <div class="newest-label">Notifications:</div>
                 <div id="newest-list"></div>
             </div>
 
@@ -255,7 +259,7 @@ body {
 
 
 const API =
-"https://script.google.com/macros/s/AKfycbxlJ0S3fG8eNdCMx6W7JyfSivyD7GuU1yBp420hK45v_XzAJ-zfilB9C2aOoF06nyKzXw/exec";
+"https://script.google.com/macros/s/AKfycby3YE2won9VDswJVZ1Wf2ukVMyKCkXy_n-X7Pg35OhbMtq6VtTKu4A1i-_ZcDImPl-BHA/exec";
 
 const accountName = "Neil";
 
@@ -383,17 +387,23 @@ function unlockDms() {
         const newest = data.newest || [];
 
         if (newest.length === 0) {
-            newestListEl.innerHTML = "<div class='newest-item'>No replies yet.</div>";
+            newestListEl.innerHTML = "<div class='newest-item'>No notifications yet.</div>";
         } else {
 
-            newestListEl.innerHTML = newest.map(item => `
+            newestListEl.innerHTML = newest.map(item => {
+
+                const prefix = item.kind === "followed_post" ? "" : "Replying to: ";
+
+                return `
                 <div class="newest-item">
                     <div class="newest-meta">${accountLink(item.name)} <span style="font-weight:normal;">#${item.id}</span></div>
-                    <div class="newest-target">Replying to: ${item.targetLabel}</div>
+                    <div class="newest-target">${prefix}${item.targetLabel}</div>
                     <div class="newest-time">${new Date(item.timestamp).toLocaleString()}</div>
                     ${item.body}
                 </div>
-            `).join("");
+                `;
+
+            }).join("");
 
         }
 
