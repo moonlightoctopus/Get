@@ -114,9 +114,7 @@ body {
     text-shadow:
         0 0 5px #fff,
         0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 30px #fff,
-        0 0 40px #fff;
+        0 0 20px #fff;
     pointer-events: none;
     white-space: nowrap;
 }
@@ -415,7 +413,7 @@ body {
             Request Profile Changes
         </a>
 
-        <a id="report" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6">
+        <a id="report" class="win95-btn" href="https://forms.gle/3mCvFGJ4ruWjZ2kD7">
             Report
         </a>
     </div>
@@ -443,6 +441,7 @@ body {
 
 <div class="search-bar">
     <div class="search-group">
+        <input id="titleSearch" class="search-input" type="text" placeholder="Search titles...">
         <input id="tagSearch" class="search-input" type="text" placeholder="Search tags...">
         <button id="tagSearchBtn" class="win95-btn search-btn">Search</button>
         <button id="tagSearchClear" class="win95-btn search-btn">Clear</button>
@@ -526,6 +525,7 @@ const url = "https://script.google.com/macros/s/AKfycbxlJ0S3fG8eNdCMx6W7JyfSivyD
 
 let allPosts = [];
 let currentSearch = "";
+let currentTitleSearch = "";
 
 // Returns the tags on a post as a clean, lowercase array for matching.
 function postTags(post) {
@@ -535,12 +535,19 @@ function postTags(post) {
         .filter(Boolean);
 }
 
-// Posts whose tags include (as a substring) the current search query.
+// Posts whose tags include (as a substring) the current tag search query,
+// AND whose title includes (as a substring) the current title search query.
+// Either filter is skipped if its query is empty.
 function getFilteredPosts() {
-    if (!currentSearch) return allPosts;
-    const q = currentSearch.trim().toLowerCase();
-    if (!q) return allPosts;
-    return allPosts.filter(post => postTags(post).some(tag => tag.includes(q)));
+
+    const tagQ = currentSearch.trim().toLowerCase();
+    const titleQ = currentTitleSearch.trim().toLowerCase();
+
+    return allPosts.filter(post => {
+        const matchesTag = !tagQ || postTags(post).some(tag => tag.includes(tagQ));
+        const matchesTitle = !titleQ || (post.title || "").toLowerCase().includes(titleQ);
+        return matchesTag && matchesTitle;
+    });
 }
 
 function renderPosts(page) {
@@ -555,8 +562,12 @@ function renderPosts(page) {
     if (page > totalPages) page = totalPages;
 
     if (posts.length === 0) {
+        const parts = [];
+        if (currentTitleSearch.trim()) parts.push(`title "${currentTitleSearch}"`);
+        if (currentSearch.trim()) parts.push(`tag "${currentSearch}"`);
+        const desc = parts.length ? parts.join(" and ") : "your search";
         container.innerHTML =
-            `<div class="post"><div class="post-body-wrap">No posts match tag "${currentSearch}".</div></div>`;
+            `<div class="post"><div class="post-body-wrap">No posts match ${desc}.</div></div>`;
         return;
     }
 
@@ -695,13 +706,15 @@ container.addEventListener("click", event => {
     window.scrollTo({ top: 0, behavior: "instant" });
 });
 
-// Tag search wiring.
+// Tag & title search wiring.
 const searchInput = document.getElementById("tagSearch");
+const titleSearchInput = document.getElementById("titleSearch");
 const searchBtn = document.getElementById("tagSearchBtn");
 const clearBtn = document.getElementById("tagSearchClear");
 
 function runSearch() {
     currentSearch = searchInput.value;
+    currentTitleSearch = titleSearchInput.value;
     renderPosts(1);
 }
 
@@ -711,9 +724,15 @@ searchInput.addEventListener("keydown", event => {
     if (event.key === "Enter") runSearch();
 });
 
+titleSearchInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") runSearch();
+});
+
 clearBtn.addEventListener("click", () => {
     searchInput.value = "";
+    titleSearchInput.value = "";
     currentSearch = "";
+    currentTitleSearch = "";
     renderPosts(1);
 });
 
