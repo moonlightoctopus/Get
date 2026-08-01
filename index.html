@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Get - Bulletin Board</title>
+<title>The Site's Home</title>
 
 <style>
 
@@ -323,6 +323,31 @@ body {
     padding: 4px;
 }
 
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 14px 0;
+}
+
+.pagination .win95-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+}
+
+.pagination .win95-btn.disabled {
+    color: #808080;
+    text-shadow: 1px 1px 0 #fff;
+    pointer-events: none;
+    cursor: default;
+}
+
+.page-indicator {
+    font-size: 12px;
+    font-weight: bold;
+}
+
 </style>
 
 </head>
@@ -409,6 +434,31 @@ function renderReply(reply) {
         </div>
     `;
 }
+const POSTS_PER_PAGE = 10;
+
+// Builds the "?page=N" href, keeping any other existing query params intact.
+function pageHref(page) {
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", page);
+    return `${window.location.pathname}?${params.toString()}`;
+}
+
+function renderPagination(page, totalPages) {
+
+    if (totalPages <= 1) return "";
+
+    const prevDisabled = page <= 1;
+    const nextDisabled = page >= totalPages;
+
+    return `
+        <div class="pagination">
+            <a class="win95-btn ${prevDisabled ? "disabled" : ""}" href="${prevDisabled ? "#" : pageHref(page - 1)}">&laquo; Prev</a>
+            <span class="page-indicator">Page ${page} of ${totalPages}</span>
+            <a class="win95-btn ${nextDisabled ? "disabled" : ""}" href="${nextDisabled ? "#" : pageHref(page + 1)}">Next &raquo;</a>
+        </div>
+    `;
+}
+
 const url = "https://script.google.com/macros/s/AKfycbwT3U2A_sY71UgvbgJsP3bwMkSxe65sXIkjB5mspxaxDlWlmLKbVtfrJVJ5Q5a50PyxjQ/exec";
 
 
@@ -429,7 +479,17 @@ fetch(url)
 
     posts.reverse();
 
-    const postsHtml = posts.map(post => {
+    const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+
+    const params = new URLSearchParams(window.location.search);
+    let page = parseInt(params.get("page"), 10);
+    if (!Number.isInteger(page) || page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+
+    const startIdx = (page - 1) * POSTS_PER_PAGE;
+    const pagePosts = posts.slice(startIdx, startIdx + POSTS_PER_PAGE);
+
+    const postsHtml = pagePosts.map(post => {
 
         const tags = post.tags
 
@@ -507,7 +567,9 @@ fetch(url)
 
     });
 
-    container.innerHTML = postsHtml.join("");
+    const paginationHtml = renderPagination(page, totalPages);
+
+    container.innerHTML = paginationHtml + postsHtml.join("") + paginationHtml;
 
 });
 
