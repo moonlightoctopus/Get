@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Rules - Bulletin Board</title>
+
+<style>
+
+@font-face {
+    font-family: 'Win95';
+    src: local('MS Sans Serif'), local('Tahoma');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'MS Sans Serif', 'Tahoma', Geneva, sans-serif;
+    font-size: 13px;
+    background: #c0c0c0;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+/* ---------- top taskbar ---------- */
+
+.taskbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 54px;
+    background: #c0c0c0;
+    border-bottom: 2px solid #000;
+    box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    z-index: 1000;
+}
+
+.win95-btn {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.win95-btn:active {
+    border-style: inset;
+    padding: 9px 15px 7px 17px;
+}
+
+/* ---------- rules window ---------- */
+
+#content {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 74px 20px 40px 20px;
+}
+
+.window {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    margin-bottom: 24px;
+}
+
+.window-body-wrap {
+    background: #c0c0c0;
+    padding: 12px;
+}
+
+.window-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.window-text {
+    background: #fff;
+    border: 2px inset #808080;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="taskbar">
+    <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A">
+        Submit a post
+    </a>
+
+    <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
+        Make an account
+    </a>
+
+    <a id="home" class="win95-btn" href="https://moonlightoctopus.github.io/Get/">
+        Back to home
+    </a>
+</div>
+
+<div id="content">
+
+    <div class="window">
+        <div class="window-body-wrap">
+
+            <div class="window-title">Rules</div>
+
+            <div class="window-text" id="rules-text">Loading rules...</div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+const url = "https://script.google.com/macros/s/AKfycbyVoVuSXuXcrpPPFEYqKtFZ_b7zd_6wwYXIsekWXXLzqj_3gKXODqQASaYnfEn-UfaF/exec";
+
+const rulesEl = document.getElementById("rules-text");
+
+fetch(url)
+
+.then(response => response.json())
+
+.then(data => {
+
+    if (!data || typeof data.rules !== "string") {
+        rulesEl.textContent = "Failed to load rules: " + ((data && data.error) || "unknown error");
+        return;
+    }
+
+    rulesEl.innerHTML = data.rules;
+
+})
+
+.catch(err => {
+    rulesEl.textContent = "Failed to load rules: " + err;
+});
+
+</script>
+
+</body>
+
+</html>
