@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Profiles</title>
+
+<style>
+
+@font-face {
+    font-family: 'Win95';
+    src: local('MS Sans Serif'), local('Tahoma');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'MS Sans Serif', 'Tahoma', Geneva, sans-serif;
+    font-size: 13px;
+    background: #999999;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+/* ---------- top taskbar ---------- */
+
+.taskbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 54px;
+    background: #c0c0c0;
+    border-bottom: 2px solid #000;
+    box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    z-index: 1000;
+}
+
+.taskbar-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.win95-btn {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.win95-btn:active {
+    border-style: inset;
+    padding: 9px 15px 7px 17px;
+}
+
+.site-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 30px #fff,
+        0 0 40px #fff;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* ---------- mods area ---------- */
+
+#mods {
+    width: 100%;
+    margin: 0;
+    padding: 94px 20px 40px 20px;
+}
+
+.mods-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mods-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.bubble {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    display: inline-block;
+}
+
+.bubble-link {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    margin: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bubble-link:hover {
+    text-decoration: underline;
+    background: #e8e8e8;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="taskbar">
+    <div class="taskbar-group">
+        <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A">
+            Submit a post
+        </a>
+
+        <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
+            Make an account
+        </a>
+    </div>
+
+    <div class="taskbar-group">
+        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
+            Rules
+        </a>
+
+        <a id="home" class="win95-btn" href="https://moonlightoctopus.github.io/Get/">
+            Back to Home
+        </a>
+    </div>
+
+    <div class="site-title">The Site</div>
+</div>
+
+<div id="mods">
+
+    <div class="mods-heading">Profiles</div>
+
+    <div class="mods-list">
+
+        <div class="bubble">
+            <a class="bubble-link" href="https://moonlightoctopus.github.io/Get/accounts/neil.html">Neil</a>
+        </div>
+
+        <div class="bubble">
+            <a class="bubble-link" href="https://moonlightoctopus.github.io/Get/accounts/bas_the_bass.html">The Bass</a>
+        </div>
+
+        <div class="bubble">
+            <a class="bubble-link" href="https://moonlightoctopus.github.io/Get/accounts/maxim-kozusko.html">Max</a>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
