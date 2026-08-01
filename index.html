@@ -401,41 +401,41 @@ body {
 
 <div class="taskbar">
     <div class="taskbar-group">
-        <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A">
+        <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A" target="_blank" rel="noopener">
             Submit a post
         </a>
 
-        <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
+        <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5" target="_blank" rel="noopener">
             Make an account
         </a>
 
-        <a id="account" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6">
+        <a id="account" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6" target="_blank" rel="noopener">
             Request Profile Changes
         </a>
 
-        <a id="report" class="win95-btn" href="https://forms.gle/3mCvFGJ4ruWjZ2kD7">
+        <a id="report" class="win95-btn" href="https://forms.gle/3mCvFGJ4ruWjZ2kD7" target="_blank" rel="noopener">
             Report
         </a>
     </div>
 
     <div class="taskbar-group">
-        <a id="profiles" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/view-profiles.html">
+        <a id="profiles" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/view-profiles.html" target="_blank" rel="noopener">
             View Profiles
         </a>
 
-        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
+        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html" target="_blank" rel="noopener">
             Rules
         </a>
 
-        <a id="mods" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/mods.html">
+        <a id="mods" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/mods.html" target="_blank" rel="noopener">
             View Mods
         </a>
         
-        <a id="feedback" class="win95-btn" href="https://forms.gle/PSH3yVqZdnvzEK2u5">
+        <a id="feedback" class="win95-btn" href="https://forms.gle/PSH3yVqZdnvzEK2u5" target="_blank" rel="noopener">
             Submit Feedback & Ideas
         </a>
 
-        <a id="dev" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/devlog.html">
+        <a id="dev" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/devlog.html" target="_blank" rel="noopener">
             Devlog
         </a>
     </div>
@@ -465,7 +465,7 @@ function accountUrl(name) {
 }
 
 function accountLink(name, className) {
-    return `<a class="${className}" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html">${name}</a>`;
+    return `<a class="${className}" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html" target="_blank" rel="noopener">${name}</a>`;
 }
 
 // Renders a reply and all of its own replies, recursively — works at any
@@ -612,6 +612,7 @@ function renderPosts(page) {
                     <a
                         class="account"
                         href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(post.name)}.html"
+                        target="_blank" rel="noopener"
                     >
                         ${post.name}
                     </a>
