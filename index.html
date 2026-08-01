@@ -173,6 +173,12 @@ body {
     color: #999;
 }
 
+.pinned-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
 .title {
     font-size: 18px;
     font-weight: bold;
@@ -384,6 +390,10 @@ body {
     font-weight: bold;
 }
 
+#report {
+    color: rgb(88, 18, 18);
+}
+
 </style>
 
 </head>
@@ -400,6 +410,14 @@ body {
         <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
             Make an account
         </a>
+
+        <a id="account" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6">
+            Request Profile Changes
+        </a>
+
+        <a id="report" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6">
+            Report
+        </a>
     </div>
 
     <div class="taskbar-group">
@@ -413,6 +431,10 @@ body {
         
         <a id="feedback" class="win95-btn" href="https://forms.gle/PSH3yVqZdnvzEK2u5">
             Submit Feedback & Ideas
+        </a>
+
+        <a id="dev" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/devlog.html">
+            Devlog
         </a>
     </div>
 
@@ -500,7 +522,7 @@ function renderPagination(page, totalPages) {
     `;
 }
 
-const url = "https://script.google.com/macros/s/AKfycbwT3U2A_sY71UgvbgJsP3bwMkSxe65sXIkjB5mspxaxDlWlmLKbVtfrJVJ5Q5a50PyxjQ/exec";
+const url = "https://script.google.com/macros/s/AKfycby5hn9XZF_dczNfmvEcIAzZnjBFyjr5vd2WLOpBueFF7V5Lfg2bCMnnAVa6B2m_Ax-pfA/exec";
 
 let allPosts = [];
 let currentSearch = "";
@@ -563,6 +585,12 @@ function renderPosts(page) {
         <div class="post">
 
             <div class="post-body-wrap">
+
+                ${
+                    post.pinned
+                        ? `<div class="pinned-label">Pinned by ${post.pinnedByName}</div>`
+                        : ""
+                }
 
                 <div class="header">
 
@@ -639,6 +667,11 @@ fetch(url)
     }
 
     posts.reverse();
+
+    // Pinned posts float to the top; order is otherwise unchanged (Array.sort
+    // is stable, so newest-first order is preserved within each group).
+    posts.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+
     allPosts = posts;
 
     const params = new URLSearchParams(window.location.search);
