@@ -2,7 +2,7 @@ name: Generate account pages
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/.1 * * * *"
   workflow_dispatch: {}
   repository_dispatch:
     types: [new-account]
