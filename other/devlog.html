@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Devlog</title>
+<title>Rules - Bulletin Board</title>
 
 <style>
 
@@ -43,12 +43,6 @@ body {
     z-index: 1000;
 }
 
-.taskbar-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
 .win95-btn {
     background: #c0c0c0;
     border: 2px outset #fff;
@@ -67,55 +61,36 @@ body {
     padding: 9px 15px 7px 17px;
 }
 
-.site-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow:
-        0 0 5px #fff,
-        0 0 10px #fff,
-        0 0 20px #fff,
-        0 0 30px #fff,
-        0 0 40px #fff;
-    pointer-events: none;
-    white-space: nowrap;
+/* ---------- rules window ---------- */
+
+#content {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 74px 20px 40px 20px;
 }
 
-#blocks {
-    width: 100%;
-    margin: 0;
-    padding: 94px 20px 40px 20px;
-}
-
-.blocks-heading {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.blocks-list {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.post {
+.window {
     background: #c0c0c0;
     border: 2px outset #fff;
-    display: inline-block;
-    margin: 6px;
-    padding: 6px 12px;
+    margin-bottom: 24px;
+}
 
-    color: #000;
-    font-size: 11px;
+.window-body-wrap {
+    background: #c0c0c0;
+    padding: 12px;
+}
+
+.window-title {
+    font-size: 18px;
     font-weight: bold;
-    text-align: left;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.window-text {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.5;
     white-space: pre-wrap;
 }
 
@@ -127,46 +102,60 @@ body {
 <body>
 
 <div class="taskbar">
-    <div class="taskbar-group">
-        <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A">
-            Submit a post
-        </a>
+    <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A">
+        Submit a post
+    </a>
 
-        <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
-            Make an account
-        </a>
-    </div>
+    <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
+        Make an account
+    </a>
 
-    <div class="taskbar-group">
-        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
-            Rules
-        </a>
-
-        <a id="home" class="win95-btn" href="https://moonlightoctopus.github.io/Get/">
-            Back to Home
-        </a>
-    </div>
-
-    <div class="site-title">The Site</div>
+    <a id="home" class="win95-btn" href="https://moonlightoctopus.github.io/Get/">
+        Back to home
+    </a>
 </div>
 
-<div id="blocks">
+<div id="content">
 
-    <div class="blocks-list">
+    <div class="window">
+        <div class="window-body-wrap">
 
-        <div class="post">
-        > Turns out I fucked the main page earlier today LOL
-        I've gone ahead and fixed it.
+            <div class="window-title">Rules</div>
+
+            <div class="window-text" id="rules-text">Loading rules...</div>
+
         </div>
-
-        <div class="post">
-        > Yay, now you guys can follow eachother ! Isn't that nice?
-        </div>
-
     </div>
 
 </div>
 
+
+<script>
+
+const url = "https://script.google.com/macros/s/AKfycbyvxsxdjKNUW_VgUZ4H2_s1P9NuoRKLzB2sLr8Yx-Gp7Jk8eaaBVGoUCnAN9FGt1Cri7A/exec";
+
+const rulesEl = document.getElementById("rules-text");
+
+fetch(url)
+
+.then(response => response.json())
+
+.then(data => {
+
+    if (!data || typeof data.rules !== "string") {
+        rulesEl.textContent = "Failed to load rules: " + ((data && data.error) || "unknown error");
+        return;
+    }
+
+    rulesEl.innerHTML = data.rules;
+
+})
+
+.catch(err => {
+    rulesEl.textContent = "Failed to load rules: " + err;
+});
+
+</script>
 
 </body>
 
