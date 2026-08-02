@@ -1,0 +1,31 @@
+name: Generate account pages
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [new-account]
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate missing account pages
+        run: node scripts/generate-accounts.js
+
+      - name: Commit new pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Get/accounts
+          git diff --cached --quiet || git commit -m "Auto-generate new account pages"
+          git push
