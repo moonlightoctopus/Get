@@ -145,7 +145,7 @@ fetch(url)
         return;
     }
 
-    devlogEl.innerHTML = data.devlog;
+    devlogEl.innerHTML = JSON.parse('"' + data.devlog.replace(/"/g, '\\"') + '"');
 
 })
 
