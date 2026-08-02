@@ -5,7 +5,7 @@ const path = require("path");
 const API_URL =
   "https://script.google.com/macros/s/AKfycby3YE2won9VDswJVZ1Wf2ukVMyKCkXy_n-X7Pg35OhbMtq6VtTKu4A1i-_ZcDImPl-BHA/exec";
 
-const ACCOUNTS_DIR = path.join(__dirname, "..", "Get", "accounts");
+const ACCOUNTS_DIR = path.join(__dirname, "..", "accounts");
 
 const TEMPLATE = `<!DOCTYPE html>
 <html>
