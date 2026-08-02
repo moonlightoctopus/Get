@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Rules - Bulletin Board</title>
+<title>Devlog</title>
 
 <style>
 
@@ -60,9 +60,7 @@ body {
     border-style: inset;
     padding: 9px 15px 7px 17px;
 }
-
-/* ---------- rules window ---------- */
-
+    
 #content {
     max-width: 700px;
     margin: 0 auto;
@@ -120,9 +118,9 @@ body {
     <div class="window">
         <div class="window-body-wrap">
 
-            <div class="window-title">Rules</div>
+            <div class="window-title">Devlog</div>
 
-            <div class="window-text" id="rules-text">Loading rules...</div>
+            <div class="window-text" id="devlog-text">Loading devlog...</div>
 
         </div>
     </div>
@@ -134,7 +132,7 @@ body {
 
 const url = "https://script.google.com/macros/s/AKfycbyvxsxdjKNUW_VgUZ4H2_s1P9NuoRKLzB2sLr8Yx-Gp7Jk8eaaBVGoUCnAN9FGt1Cri7A/exec";
 
-const rulesEl = document.getElementById("rules-text");
+const devlogEl = document.getElementById("devlog-text");
 
 fetch(url)
 
@@ -142,17 +140,17 @@ fetch(url)
 
 .then(data => {
 
-    if (!data || typeof data.rules !== "string") {
-        rulesEl.textContent = "Failed to load rules: " + ((data && data.error) || "unknown error");
+    if (!data || typeof data.devlog !== "string") {
+        devlogEl.textContent = "Failed to load devlog: " + ((data && data.error) || "unknown error");
         return;
     }
 
-    rulesEl.innerHTML = data.rules;
+    devlogEl.innerHTML = data.devlog;
 
 })
 
 .catch(err => {
-    rulesEl.textContent = "Failed to load rules: " + err;
+    devlogEl.textContent = "Failed to load devlog: " + err;
 });
 
 </script>
