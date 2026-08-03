@@ -1,7 +1,7 @@
 (function () {
 
 const API =
-"https://script.google.com/macros/s/AKfycby3YE2won9VDswJVZ1Wf2ukVMyKCkXy_n-X7Pg35OhbMtq6VtTKu4A1i-_ZcDImPl-BHA/exec";
+"https://script.google.com/macros/s/AKfycbyrRcZRt7bYAHXWbe6u0kt9ycWsY1sODJDF1g3NDxeqILLt2_prDkrxmH-xmEP7EfuTdQ/exec";
 
 document.getElementById("app").innerHTML = `
 <div class="window">
@@ -12,6 +12,7 @@ document.getElementById("app").innerHTML = `
         </a>
 
         <div class="username" id="username">Loading...</div>
+        <div class="account-index" id="account-index"></div>
 
         <div class="bio-label">Bio:</div>
         <div class="bio" id="bio">Loading...</div>
@@ -46,6 +47,7 @@ document.getElementById("app").innerHTML = `
     </div>
 </div>
 `;
+
 function accountUrl(name) {
     return name.trim().toLowerCase().replace(/\s+/g, "-");
 }
@@ -171,6 +173,11 @@ fetch(API)
         document.title = accountName + " - Profile";
         document.getElementById("username").textContent = accountName;
         document.getElementById("bio").textContent = account.bio || "No bio set.";
+
+        const indexEl = document.getElementById("account-index");
+        if (account.accountIndex != null) {
+            indexEl.textContent = `#${account.accountIndex}`;
+        }
     } else {
         document.getElementById("username").textContent = "Unknown account";
         document.getElementById("username").classList.add("error-state");

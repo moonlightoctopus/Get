@@ -19,6 +19,7 @@ body {
 }
 
 .profile {
+    position: relative;
     padding: 20px;
     text-align: center;
 }
@@ -28,6 +29,15 @@ body {
     font-weight: bold;
     margin-bottom: 16px;
     color: #000;
+}
+
+.account-index {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
 }
 
 .bio-label {
