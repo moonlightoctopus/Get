@@ -392,6 +392,71 @@ body {
     color: rgb(88, 18, 18);
 }
 
+/* ---------- polls ---------- */
+
+.poll-badge {
+    display: inline-block;
+    background: #000080;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+.poll-options {
+    background: #fff;
+    border: 2px inset #808080;
+    padding: 10px;
+    margin-bottom: 12px;
+}
+
+.poll-option {
+    margin-bottom: 10px;
+}
+
+.poll-option:last-of-type {
+    margin-bottom: 6px;
+}
+
+.poll-option-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.poll-option-label {
+    font-weight: bold;
+    color: #000;
+}
+
+.poll-option-stats {
+    color: #444;
+    white-space: nowrap;
+}
+
+.poll-bar-track {
+    background: #c0c0c0;
+    border: 2px inset #808080;
+    height: 14px;
+}
+
+.poll-bar-fill {
+    background: #000080;
+    height: 100%;
+}
+
+.poll-total {
+    font-size: 11px;
+    color: #666;
+    text-align: right;
+    margin-top: 2px;
+}
+
 </style>
 
 </head>
@@ -401,41 +466,45 @@ body {
 
 <div class="taskbar">
     <div class="taskbar-group">
-        <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A" target="_blank" rel="noopener">
+        <a id="submit" class="win95-btn" href="https://forms.gle/CMp8R9QD4FQjnYh3A">
             Submit a post
         </a>
 
-        <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5" target="_blank" rel="noopener">
+        <a id="submit-poll" class="win95-btn" href="https://forms.gle/BzsLhf1afYY5pSqz7">
+            Submit a poll
+        </a>
+
+        <a id="account" class="win95-btn" href="https://forms.gle/vFY3431M2UkGoQky5">
             Make an account
         </a>
 
-        <a id="account" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6" target="_blank" rel="noopener">
+        <a id="account" class="win95-btn" href="https://forms.gle/EMxoFf2P8ttZChFr6">
             Request Profile Changes
         </a>
 
-        <a id="report" class="win95-btn" href="https://forms.gle/3mCvFGJ4ruWjZ2kD7" target="_blank" rel="noopener">
+        <a id="report" class="win95-btn" href="https://forms.gle/3mCvFGJ4ruWjZ2kD7">
             Report
         </a>
     </div>
 
     <div class="taskbar-group">
-        <a id="profiles" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/view-profiles.html" target="_blank" rel="noopener">
+        <a id="profiles" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/view-profiles.html">
             View Profiles
         </a>
 
-        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html" target="_blank" rel="noopener">
+        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
             Rules
         </a>
 
-        <a id="mods" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/mods.html" target="_blank" rel="noopener">
+        <a id="mods" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/mods.html">
             View Mods
         </a>
         
-        <a id="feedback" class="win95-btn" href="https://forms.gle/PSH3yVqZdnvzEK2u5" target="_blank" rel="noopener">
+        <a id="feedback" class="win95-btn" href="https://forms.gle/PSH3yVqZdnvzEK2u5">
             Submit Feedback & Ideas
         </a>
 
-        <a id="dev" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/devlog.html" target="_blank" rel="noopener">
+        <a id="dev" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/devlog.html">
             Devlog
         </a>
     </div>
@@ -465,13 +534,20 @@ function accountUrl(name) {
 }
 
 function accountLink(name, className) {
-    return `<a class="${className}" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html" target="_blank" rel="noopener">${name}</a>`;
+    return `<a class="${className}" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html">${name}</a>`;
 }
+
+// Form links.
+const POST_REPLY_FORM_URL = "https://forms.gle/NsCWdpkaFn56UM7K6";
+const NESTED_REPLY_FORM_URL = "https://forms.gle/unba1gXEDGBEx6YA8";
+
+const POLL_VOTE_FORM_URL = "https://forms.gle/CsCDhXQRc7Z4Cs9d8";
+const POLL_REPLY_FORM_URL = "https://forms.gle/gEysWboPvkKx85ic7";
 
 // Renders a reply and all of its own replies, recursively — works at any
 // nesting depth, since the same "Reply" form and dropdown pattern applies
 // whether you're replying to a post's reply or to another reply.
-function renderReply(reply) {
+function renderReply(reply, nestedReplyFormUrl) {
 
     const children = reply.replies || [];
 
@@ -487,11 +563,15 @@ function renderReply(reply) {
                 </div>
                 <div class="reply-body">${reply.body}</div>
 
-                <div class="nested-actions">
-                    <a class="win95-btn tiny-btn" href="https://forms.gle/unba1gXEDGBEx6YA8" target="_blank" rel="noopener">
-                        Reply
-                    </a>
-                </div>
+                ${
+                    nestedReplyFormUrl
+                        ? `<div class="nested-actions">
+                            <a class="win95-btn tiny-btn" href="${nestedReplyFormUrl}" target="_blank" rel="noopener">
+                                Reply
+                            </a>
+                        </div>`
+                        : ""
+                }
 
                 <details class="nested-dropdown">
                     <summary class="nested-summary">Replies (${children.length})</summary>
@@ -499,7 +579,7 @@ function renderReply(reply) {
                         ${
                             children.length === 0
                                 ? `<div class="no-replies-tiny">No replies yet.</div>`
-                                : children.map(renderReply).join("")
+                                : children.map(child => renderReply(child, nestedReplyFormUrl)).join("")
                         }
                     </div>
                 </details>
@@ -525,7 +605,7 @@ function renderPagination(page, totalPages) {
     `;
 }
 
-const url = "https://script.google.com/macros/s/AKfycbxlJ0S3fG8eNdCMx6W7JyfSivyD7GuU1yBp420hK45v_XzAJ-zfilB9C2aOoF06nyKzXw/exec";
+const url = "https://script.google.com/macros/s/AKfycbx4JapumDGYAvaXK5I-piP_MhqIYHiE0vpfxcQFv2AbARzf68ZaqRYuj1kI5MOl_mtFzg/exec";
 
 let allPosts = [];
 let currentSearch = "";
@@ -554,49 +634,14 @@ function getFilteredPosts() {
     });
 }
 
-function renderPosts(page) {
+function renderPostCard(post) {
 
-    const container = document.getElementById("posts");
+    const tags = post.tags
+        .split(",")
+        .map(tag => `<span class="tag">${tag.trim()}</span>`)
+        .join("");
 
-    const posts = getFilteredPosts();
-
-    const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
-
-    if (!Number.isInteger(page) || page < 1) page = 1;
-    if (page > totalPages) page = totalPages;
-
-    if (posts.length === 0) {
-        const parts = [];
-        if (currentTitleSearch.trim()) parts.push(`title "${currentTitleSearch}"`);
-        if (currentSearch.trim()) parts.push(`tag "${currentSearch}"`);
-        const desc = parts.length ? parts.join(" and ") : "your search";
-        container.innerHTML =
-            `<div class="post"><div class="post-body-wrap">No posts match ${desc}.</div></div>`;
-        return;
-    }
-
-    const startIdx = (page - 1) * POSTS_PER_PAGE;
-    const pagePosts = posts.slice(startIdx, startIdx + POSTS_PER_PAGE);
-
-    const postsHtml = pagePosts.map(post => {
-
-        const tags = post.tags
-
-            .split(",")
-
-            .map(tag =>
-                `<span class="tag">
-                    ${tag.trim()}
-                 </span>`
-            )
-
-            .join("");
-
-
-
-        return `
-
-
+    return `
         <div class="post">
 
             <div class="post-body-wrap">
@@ -612,7 +657,6 @@ function renderPosts(page) {
                     <a
                         class="account"
                         href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(post.name)}.html"
-                        target="_blank" rel="noopener"
                     >
                         ${post.name}
                     </a>
@@ -638,7 +682,7 @@ function renderPosts(page) {
                 </div>
 
                 <div class="post-actions">
-                    <a class="win95-btn reply-btn" href="https://forms.gle/NsCWdpkaFn56UM7K6" target="_blank" rel="noopener">
+                    <a class="win95-btn reply-btn" href="${POST_REPLY_FORM_URL}" target="_blank" rel="noopener">
                         Reply
                     </a>
                 </div>
@@ -649,7 +693,7 @@ function renderPosts(page) {
                         ${
                             !post.replies || post.replies.length === 0
                                 ? `<div class="no-replies">No replies yet.</div>`
-                                : post.replies.map(renderReply).join("")
+                                : post.replies.map(reply => renderReply(reply, NESTED_REPLY_FORM_URL)).join("")
                         }
                     </div>
                 </details>
@@ -657,11 +701,128 @@ function renderPosts(page) {
             </div>
 
         </div>
+    `;
+}
 
+// Poll cards reuse the same shell (.post) plus a vote-tally block. Poll
+// replies are rendered with renderReply(reply, null) since there's no
+// "reply to a poll reply" form yet — see the Apps Script comments.
+function renderPollCard(poll) {
 
-        `;
+    const tags = poll.tags
+        .split(",")
+        .map(tag => `<span class="tag">${tag.trim()}</span>`)
+        .join("");
 
-    });
+    const r = poll.results || { aCount: 0, bCount: 0, total: 0, aPercent: 0, bPercent: 0 };
+
+    return `
+        <div class="post poll">
+
+            <div class="post-body-wrap">
+
+                <div class="header">
+
+                    <a
+                        class="account"
+                        href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(poll.name)}.html"
+                    >
+                        ${poll.name}
+                    </a>
+
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="time">
+                            ${new Date(poll.timestamp).toLocaleString()}
+                        </div>
+
+                        <div class="post-number">#${poll.number}</div>
+                    </div>
+
+                </div>
+
+                <div class="title">${poll.title}</div>
+
+                <div class="body">${poll.body.trim()}</div>
+
+                <div class="poll-options">
+
+                    <div class="poll-option">
+                        <div class="poll-option-row">
+                            <span class="poll-option-label">${poll.question1}</span>
+                            <span class="poll-option-stats">${r.aCount} vote${r.aCount === 1 ? "" : "s"} (${r.aPercent}%)</span>
+                        </div>
+                        <div class="poll-bar-track"><div class="poll-bar-fill" style="width:${r.aPercent}%"></div></div>
+                    </div>
+
+                    <div class="poll-option">
+                        <div class="poll-option-row">
+                            <span class="poll-option-label">${poll.question2}</span>
+                            <span class="poll-option-stats">${r.bCount} vote${r.bCount === 1 ? "" : "s"} (${r.bPercent}%)</span>
+                        </div>
+                        <div class="poll-bar-track"><div class="poll-bar-fill" style="width:${r.bPercent}%"></div></div>
+                    </div>
+
+                    <div class="poll-total">${r.total} total vote${r.total === 1 ? "" : "s"}</div>
+
+                </div>
+
+                <div class="tags">
+                    ${tags}
+                </div>
+
+                <div class="post-actions">
+                    <a class="win95-btn reply-btn" href="${POLL_VOTE_FORM_URL}" target="_blank" rel="noopener">
+                        Vote
+                    </a>
+                    <a class="win95-btn reply-btn" href="${POLL_REPLY_FORM_URL}" target="_blank" rel="noopener">
+                        Reply
+                    </a>
+                </div>
+
+                <details class="replies-dropdown">
+                    <summary class="replies-summary">Replies (${(poll.replies || []).length})</summary>
+                    <div class="replies-list">
+                        ${
+                            !poll.replies || poll.replies.length === 0
+                                ? `<div class="no-replies">No replies yet.</div>`
+                                : poll.replies.map(reply => renderReply(reply, null)).join("")
+                        }
+                    </div>
+                </details>
+
+            </div>
+
+        </div>
+    `;
+}
+
+function renderPosts(page) {
+
+    const container = document.getElementById("posts");
+
+    const posts = getFilteredPosts();
+
+    const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+
+    if (!Number.isInteger(page) || page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+
+    if (posts.length === 0) {
+        const parts = [];
+        if (currentTitleSearch.trim()) parts.push(`title "${currentTitleSearch}"`);
+        if (currentSearch.trim()) parts.push(`tag "${currentSearch}"`);
+        const desc = parts.length ? parts.join(" and ") : "your search";
+        container.innerHTML =
+            `<div class="post"><div class="post-body-wrap">No posts match ${desc}.</div></div>`;
+        return;
+    }
+
+    const startIdx = (page - 1) * POSTS_PER_PAGE;
+    const pagePosts = posts.slice(startIdx, startIdx + POSTS_PER_PAGE);
+
+    const postsHtml = pagePosts.map(post =>
+        post.type === "poll" ? renderPollCard(post) : renderPostCard(post)
+    );
 
     const paginationHtml = renderPagination(page, totalPages);
 
