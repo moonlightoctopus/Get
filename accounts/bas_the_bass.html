@@ -13,13 +13,9 @@ body {
     font-family: 'MS Sans Serif', 'Tahoma', Geneva, sans-serif;
     font-size: 13px;
     background-color: #c0c0c0;
-    /* Top layer is a 90%-opacity wash of the same background color.
-       Compositited over the opaque black tile pixels, that mixes them
-       90% toward the background color; over the transparent tile
-       areas it's a no-op (mixing a color with itself). */
     background-image:
         linear-gradient(rgba(192, 192, 192, 0.9), rgba(192, 192, 192, 0.9)),
-        url('fish.png');
+        url('../assets/fish.png');
     background-size: auto, 32px 32px;
     background-repeat: no-repeat, repeat;
     image-rendering: pixelated;
