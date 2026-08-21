@@ -488,15 +488,15 @@ body {
     </div>
 
     <div class="taskbar-group">
-        <a id="profiles" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/view-profiles.html">
+        <a id="profiles" class="win95-btn" href="#">
             View Profiles
         </a>
 
-        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
+        <a id="rules" class="win95-btn" href="#">
             Rules
         </a>
 
-        <a id="mods" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/mods.html">
+        <a id="mods" class="win95-btn" href="#">
             View Mods
         </a>
         
@@ -504,7 +504,7 @@ body {
             Submit Feedback & Ideas
         </a>
 
-        <a id="dev" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/devlog.html">
+        <a id="dev" class="win95-btn" href="#">
             Devlog
         </a>
     </div>
@@ -523,6 +523,7 @@ body {
 
 <div id="posts">Loading posts...</div>
 
+<script src="/assets/links.js"></script>
 
 <script>
 
@@ -533,8 +534,14 @@ function accountUrl(name) {
         .replace(/\s+/g, "-");
 }
 
+// Point the taskbar's "other" pages at the shared OTHER_BASE from links.js.
+document.getElementById("profiles").href = OTHER_BASE + "view-profiles.html";
+document.getElementById("rules").href = OTHER_BASE + "rules.html";
+document.getElementById("mods").href = OTHER_BASE + "mods.html";
+document.getElementById("dev").href = OTHER_BASE + "devlog.html";
+
 function accountLink(name, className) {
-    return `<a class="${className}" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html">${name}</a>`;
+    return `<a class="${className}" href="${ACCOUNTS_BASE}${accountUrl(name)}.html">${name}</a>`;
 }
 
 // Form links.
@@ -656,7 +663,7 @@ function renderPostCard(post) {
 
                     <a
                         class="account"
-                        href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(post.name)}.html"
+                        href="${ACCOUNTS_BASE}${accountUrl(post.name)}.html"
                     >
                         ${post.name}
                     </a>
@@ -725,7 +732,7 @@ function renderPollCard(poll) {
 
                     <a
                         class="account"
-                        href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(poll.name)}.html"
+                        href="${ACCOUNTS_BASE}${accountUrl(poll.name)}.html"
                     >
                         ${poll.name}
                     </a>

@@ -53,7 +53,7 @@ function accountUrl(name) {
 }
 
 function accountLink(name) {
-    return `<a class="account-link" href="https://moonlightoctopus.github.io/Get/accounts/${accountUrl(name)}.html">${name}</a>`;
+    return `<a class="account-link" href="${ACCOUNTS_BASE}${accountUrl(name)}.html">${name}</a>`;
 }
 
 function currentSlug() {

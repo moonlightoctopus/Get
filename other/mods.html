@@ -148,11 +148,11 @@ body {
     </div>
 
     <div class="taskbar-group">
-        <a id="rules" class="win95-btn" href="https://moonlightoctopus.github.io/Get/other/rules.html">
+        <a id="rules" class="win95-btn" href="#">
             Rules
         </a>
 
-        <a id="home" class="win95-btn" href="https://moonlightoctopus.github.io/Get/">
+        <a id="home" class="win95-btn" href="#">
             Back to Home
         </a>
     </div>
@@ -167,17 +167,24 @@ body {
     <div class="mods-list">
 
         <div class="bubble">
-            <a class="bubble-link" href="https://moonlightoctopus.github.io/Get/accounts/neil.html">Neil</a>
+            <a id="link-neil" class="bubble-link" href="#">Neil</a>
         </div>
 
         <div class="bubble">
-            <a class="bubble-link" href="https://moonlightoctopus.github.io/Get/accounts/bas_the_bass.html">The Bass</a>
+            <a id="link-bas" class="bubble-link" href="#">The Bass</a>
         </div>
 
     </div>
 
 </div>
 
+<script src="/assets/links.js"></script>
+<script>
+document.getElementById("home").href = SITE_BASE + "/";
+document.getElementById("rules").href = OTHER_BASE + "rules.html";
+document.getElementById("link-neil").href = ACCOUNTS_BASE + "neil.html";
+document.getElementById("link-bas").href = ACCOUNTS_BASE + "bas_the_bass.html";
+</script>
 
 </body>
 

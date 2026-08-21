@@ -112,7 +112,7 @@ body {
         Make an account
     </a>
 
-    <a id="home" class="win95-btn" href="https://moonlightoctopus.github.io/Get/">
+    <a id="home" class="win95-btn" href="#">
         Back to home
     </a>
 </div>
@@ -157,6 +157,11 @@ fetch(url)
     rulesEl.textContent = "Failed to load rules: " + err;
 });
 
+</script>
+
+<script src="/assets/links.js"></script>
+<script>
+document.getElementById("home").href = SITE_BASE + "/";
 </script>
 
 </body>
